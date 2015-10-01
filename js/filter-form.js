@@ -35,11 +35,15 @@
     resizeForm.classList.remove('invisible');
   };
 
-  filterForm.onsubmit = function() {
+  filterForm.onsubmit = function(evt) {
     evt.preventDefault();
-
+    docCookies.setItem(selectedFilter.name, selectedFilter.value);
     uploadForm.classList.remove('invisible');
     filterForm.classList.add('invisible');
+  }
+
+  if (docCookies.hasItem(selectedFilter.name)) {
+    selectedFilter.value = docCookies.getItem(selectedFilter.name);
   }
 
   setFilter();
