@@ -37,13 +37,13 @@
 
   filterForm.onsubmit = function(evt) {
     evt.preventDefault();
-    docCookies.setItem(selectedFilter.name, selectedFilter.value);
+    docCookies.setItem('upload-filter', selectedFilter.value);
     uploadForm.classList.remove('invisible');
     filterForm.classList.add('invisible');
   }
 
-  if (docCookies.hasItem(selectedFilter.name)) {
-    selectedFilter.value = docCookies.getItem(selectedFilter.name);
+  if (docCookies.hasItem('upload-filter')) {
+    selectedFilter.value = docCookies.getItem('upload-filter');
   }
 
   setFilter();
