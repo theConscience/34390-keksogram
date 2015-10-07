@@ -35,11 +35,15 @@
     resizeForm.classList.remove('invisible');
   };
 
-  filterForm.onsubmit = function() {
+  filterForm.onsubmit = function(evt) {
     evt.preventDefault();
-
+    docCookies.setItem('upload-filter', selectedFilter.value);
     uploadForm.classList.remove('invisible');
     filterForm.classList.add('invisible');
+  }
+
+  if (docCookies.hasItem('upload-filter')) {
+    selectedFilter.value = docCookies.getItem('upload-filter');
   }
 
   setFilter();
