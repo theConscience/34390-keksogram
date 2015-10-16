@@ -24,12 +24,12 @@
 
 var docCookies = {
     getItem: function (sKey) {
-        console.log('get item!');
+        //console.log('get item!');
         if (!sKey) { console.log('cannot get item!');return null; }
         return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
     },
     setItem: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
-        console.log('set item!');
+        //console.log('set item!');
         if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
         var sExpires = "";
         if (vEnd) {
@@ -54,7 +54,7 @@ var docCookies = {
         return true;
     },
     hasItem: function (sKey) {
-        console.log('has item!');
+        //console.log('has item!');
         if (!sKey) { console.log('no item!');return false; }
         return (new RegExp("(?:^|;\\s*)" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
     },
