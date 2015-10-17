@@ -12,6 +12,8 @@
 
   var REQUEST_FAILURE_TIMEOUT = 10000;
 
+  var PICTURE_RELEVANCE_TIME = 80*24*60*60*1000;
+
   var filtersMenu = document.querySelector('.filters');
   filtersMenu.classList.add('hidden');
 
@@ -60,6 +62,7 @@
 
     });
 
+    picturesContainer.innerHTML = '';
     picturesContainer.appendChild(picturesFragment);
     filtersMenu.classList.remove('hidden');
   }
@@ -102,9 +105,76 @@
     }
   }
 
+  function filterPictures(pictures, filterValue) {
+    var filteredPictures = pictures.slice(0);
+    switch (filterValue) {
+      case 'new':
+        // last month, desc date
+        //alert('new');
+        var now = new Date();
+        var latestPictureRelevantDate =  +now - PICTURE_RELEVANCE_TIME;
+        filteredPictures = filteredPictures.filter(function(elem) {
+          if (Date.parse(elem.date) > latestPictureRelevantDate) {
+            return elem;
+          }
+        }).sort(function(a, b) {
+          if (a.date < b.date) {
+            return 1;
+          }
+          if (a.date > b.date) {
+            return -1;
+          }
+          if (a.date === b.date) {
+            return 0;
+          }
+        });
+
+        break;
+      case 'discussed':
+        // desc comments number
+        //alert('discussed');
+        filteredPictures = filteredPictures.sort(function(a, b) {
+          if (a.comments < b.comments) {
+            return 1;
+          }
+          if (a.comments > b.comments) {
+            return -1;
+          }
+          if (a.comments === b.comments) {
+            return 0;
+          }
+        });
+        break;
+      case 'popular':
+        //alert('popular');
+      default:
+        filteredPictures = pictures.slice(0);
+        break;
+    }
+    return filteredPictures;
+  }
+
+  function initFilters() {
+    var filterElements = document.querySelectorAll('.filters .filters-radio');
+    for (var i = 0, l = filterElements.length; i < l; i++) {
+      filterElements[i].onclick = function(evt) {
+        var clickedFilter = evt.currentTarget;
+        setActiveFilter(clickedFilter.value);
+      }
+    }
+  }
+
+  function setActiveFilter(filterValue) {
+    var filteredPictures = filterPictures(pictures, filterValue);
+    var filterID = '#filter-' + filterValue + '';
+    document.querySelector(filterID).checked = true;
+    renderPictures(filteredPictures);
+  }
+
+  initFilters();
   loadPictures(function(loadedPictures){
     pictures = loadedPictures;
-    renderPictures(loadedPictures);
+    setActiveFilter('new');
   });
 
 })();
