@@ -32,9 +32,9 @@
     <input type="text" class="invisible" name="resize-image-src" id="resize-image-src" />
 
     <fieldset class="upload-resize-controls">
-      <label for="resize-x">Слева</label><input type="number" id="resize-x" name="x" required>
-      <label for="resize-y">Сверху</label><input type="number" id="resize-y" name="y" required>
-      <label for="resize-size">Сторона</label><input type="number" id="resize-size" name="size" required>
+      <label for="resize-x">Слева</label><input type="number" id="resize-x" name="x">
+      <label for="resize-y">Сверху</label><input type="number" id="resize-y" name="y">
+      <label for="resize-size">Сторона</label><input type="number" id="resize-size" name="size">
     </fieldset>
 
     <fieldset class="upload-form-controls">
@@ -63,7 +63,14 @@
 
 <div class="pictures"></div>
 
-<template id="picture-template">
+<div class="gallery-overlay invisible">
+  <span class="gallery-overlay-close">&times;</span>
+  <div class="gallery-overlay-preview">
+    <img src="" class="gallery-overlay-image" alt="" />
+  </div>
+</div>
+
+<template class="picture-template">
   <a href="" class="picture">
     <img src="" width="182" height="182">
     <span class="picture-stats">
@@ -73,7 +80,7 @@
   </a>
 </template>
 
-<script src="js/cookies.js" charset="utf-8"></script>
+<script src="lib/cookies.js" charset="utf-8"></script>
 <script src="js/logo-background.js" charset="utf-8"></script>
 <script src="js/resize-form.js" charset="utf-8"></script>
 <script src="js/upload-form.js" charset="utf-8"></script>
