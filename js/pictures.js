@@ -18,7 +18,6 @@
   filtersMenu.classList.add('hidden');
 
   var picturesContainer = document.getElementsByClassName('pictures')[0];
-  var pictures;
 
   function supportsTemplate() {
     return 'content' in document.createElement('template');
@@ -164,7 +163,8 @@
       };
     }
   }
-
+  
+  var pictures;
   initFilters();
   loadPictures(function(loadedPictures) {
     pictures = loadedPictures;
