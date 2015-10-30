@@ -8,11 +8,11 @@
     'HEADERS_RECIEVED': 2,
     'LOADING': 3,
     'DONE': 4,
-  }
+  };
 
   var REQUEST_FAILURE_TIMEOUT = 10000;
 
-  var PICTURE_RELEVANCE_TIME = 80*24*60*60*1000;
+  var PICTURE_RELEVANCE_TIME = 80 * 24 * 60 * 60 * 1000;
 
   var filtersMenu = document.querySelector('.filters');
   filtersMenu.classList.add('hidden');
@@ -27,8 +27,7 @@
   function renderPictures(pictures) {
     var pictureTemplate = document.getElementById('picture-template');
     var picturesFragment = document.createDocumentFragment();
-    pictures.forEach(function (picture, i) {
-      //console.log(picture, i);
+    pictures.forEach(function(picture, i) {
       if (supportsTemplate()) {
         var newPictureElement = pictureTemplate.content.children[0].cloneNode(true);
         newPictureElement.querySelector('.picture-likes').textContent = picture['likes'];
@@ -36,7 +35,7 @@
         newPictureElement.querySelector('.picture img').src = picture['url'];
       } else {
         var newPictureElement = pictureTemplate.innerHTML;
-        // дописать код для старых браузеров
+        alert('update your browser! Template is not supported!');
       }
 
       picturesFragment.appendChild(newPictureElement);
@@ -44,11 +43,11 @@
       var newPicture = new Image();
       newPicture.src = picture['url'];
 
-      var imageLoadTimeout = setTimeout(function () {
+      var imageLoadTimeout = setTimeout(function() {
         newPictureElement.classList.add('picture-load-failure');
-      }, REQUEST_FAILURE_TIMEOUT)
+      }, REQUEST_FAILURE_TIMEOUT);
 
-      newPicture.onload = function () {
+      newPicture.onload = function() {
         newPicture.style.height = '182px';
         newPicture.style.width = '182px';
         var oldPicture = newPictureElement.querySelector('.picture img');
@@ -56,9 +55,9 @@
         newPictureElement.replaceChild(newPicture, oldPicture);
       }
 
-      newPicture.onerror = function () {
+      newPicture.onerror = function() {
         newPictureElement.classList.add('picture-load-failure');
-      }
+      };
 
     });
 
@@ -74,7 +73,7 @@
   function loadPictures(callback) {
     var xhr = new XMLHttpRequest();
     xhr.timeout = REQUEST_FAILURE_TIMEOUT;
-    xhr.open('get','data/pictures.json');
+    xhr.open('get', 'data/pictures.json');
     xhr.send();
 
     xhr.onreadystatechange = function(evt) {
@@ -98,19 +97,17 @@
             showLoadFailure();
           }
       }
-    }
+    };
 
     xhr.ontimeout = function() {
       showLoadFailure();
-    }
+    };
   }
 
   function filterPictures(pictures, filterValue) {
     var filteredPictures = pictures.slice(0);
     switch (filterValue) {
       case 'new':
-        // last month, desc date
-        //alert('new');
         var now = new Date();
         var latestPictureRelevantDate =  +now - PICTURE_RELEVANCE_TIME;
         filteredPictures = filteredPictures.filter(function(elem) {
@@ -131,8 +128,6 @@
 
         break;
       case 'discussed':
-        // desc comments number
-        //alert('discussed');
         filteredPictures = filteredPictures.sort(function(a, b) {
           if (a.comments < b.comments) {
             return 1;
@@ -146,22 +141,11 @@
         });
         break;
       case 'popular':
-        //alert('popular');
       default:
         filteredPictures = pictures.slice(0);
         break;
     }
     return filteredPictures;
-  }
-
-  function initFilters() {
-    var filterElements = document.querySelectorAll('.filters .filters-radio');
-    for (var i = 0, l = filterElements.length; i < l; i++) {
-      filterElements[i].onclick = function(evt) {
-        var clickedFilter = evt.currentTarget;
-        setActiveFilter(clickedFilter.value);
-      }
-    }
   }
 
   function setActiveFilter(filterValue) {
@@ -171,8 +155,18 @@
     renderPictures(filteredPictures);
   }
 
+  function initFilters() {
+    var filterElements = document.querySelectorAll('.filters .filters-radio');
+    for (var i = 0, l = filterElements.length; i < l; i++) {
+      filterElements[i].onclick = function(evt) {
+        var clickedFilter = evt.currentTarget;
+        setActiveFilter(clickedFilter.value);
+      };
+    }
+  }
+
   initFilters();
-  loadPictures(function(loadedPictures){
+  loadPictures(function(loadedPictures) {
     pictures = loadedPictures;
     setActiveFilter('new');
   });
