@@ -7,7 +7,7 @@
     'OPENED': 1,
     'HEADERS_RECIEVED': 2,
     'LOADING': 3,
-    'DONE': 4,
+    'DONE': 4
   };
 
   var REQUEST_FAILURE_TIMEOUT = 10000;
@@ -27,15 +27,15 @@
   function renderPictures(pictures) {
     var pictureTemplate = document.getElementById('picture-template');
     var picturesFragment = document.createDocumentFragment();
-    pictures.forEach(function(picture, i) {
+    pictures.forEach(function(picture) {
+      var newPictureElement;
       if (supportsTemplate()) {
-        var newPictureElement = pictureTemplate.content.children[0].cloneNode(true);
+        newPictureElement = pictureTemplate.content.children[0].cloneNode(true);
         newPictureElement.querySelector('.picture-likes').textContent = picture['likes'];
         newPictureElement.querySelector('.picture-comments').textContent = picture['comments'];
         newPictureElement.querySelector('.picture img').src = picture['url'];
       } else {
-        var newPictureElement = pictureTemplate.innerHTML;
-        alert('update your browser! Template is not supported!');
+        newPictureElement = pictureTemplate.innerHTML;
       }
 
       picturesFragment.appendChild(newPictureElement);
@@ -53,7 +53,7 @@
         var oldPicture = newPictureElement.querySelector('.picture img');
         clearTimeout(imageLoadTimeout);
         newPictureElement.replaceChild(newPicture, oldPicture);
-      }
+      };
 
       newPicture.onerror = function() {
         newPictureElement.classList.add('picture-load-failure');
@@ -109,7 +109,7 @@
     switch (filterValue) {
       case 'new':
         var now = new Date();
-        var latestPictureRelevantDate =  +now - PICTURE_RELEVANCE_TIME;
+        var latestPictureRelevantDate = +now - PICTURE_RELEVANCE_TIME;
         filteredPictures = filteredPictures.filter(function(elem) {
           if (Date.parse(elem.date) > latestPictureRelevantDate) {
             return elem;
