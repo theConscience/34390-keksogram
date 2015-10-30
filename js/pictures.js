@@ -163,7 +163,6 @@
       };
     }
   }
-  
   var pictures;
   initFilters();
   loadPictures(function(loadedPictures) {
